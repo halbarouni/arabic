@@ -1,4 +1,10 @@
 {
   "note": "وُلِّد بواسطة make-fonts-manifest.js — أعد تشغيله بعد إضافة أي خط",
-  "fonts": []
+  "fonts": [
+    "aa-galaxy-bold.ttf",
+    "dima-persian.ttf",
+    "elgharib-mcs-hijaz-adorn-space.ttf",
+    "hamdy-v2-bold.ttf",
+    "old-antic-outline-shaded.ttf"
+  ]
 }
