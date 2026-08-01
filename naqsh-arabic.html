@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نقش — مصمم العبارات العربية المتداخلة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Scheherazade+New:wght@400;700&family=Reem+Kufi:wght@400;700&family=Rakkas&family=Lalezar&family=Mirza:wght@400;700&family=Jomhuria&family=Qahiri&family=Marhey:wght@300..700&family=Cairo:wght@300..900&family=Gulzar&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b23; --panel2:#1d232d; --line:#2a323e;
+    --ink:#e8eaee; --dim:#9aa4b2; --gold:#d9b46a; --gold2:#f0d191;
+    --accent:#5aa9e6;
+    --r:10px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Segoe UI","Tahoma",system-ui,sans-serif;
+    font-size:14px; overflow:hidden;
+  }
+  .app{display:flex; height:100vh; height:100dvh; width:100%}  /* dvh: mobile URL bar */
+  /* ---------- sidebar ---------- */
+  /* order:-1 puts the panel first in the RTL flex row, i.e. on the right edge */
+  .side{
+    width:400px; min-width:340px; background:var(--panel);
+    border-inline-end:1px solid var(--line);
+    display:flex; flex-direction:column; height:100%; order:-1;
+  }
+  .side header{
+    padding:14px 16px 12px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo{
+    width:34px;height:34px;border-radius:9px;
+    background:linear-gradient(140deg,var(--gold),#8a6a2a);
+    display:grid;place-items:center; color:#1a1305; font-weight:700;
+    font-family:"Traditional Arabic","Amiri",serif; font-size:22px; line-height:1;
+  }
+  header h1{font-size:16px;margin:0;font-weight:600}
+  header p{margin:2px 0 0;font-size:11px;color:var(--dim)}
+  .scroll{overflow-y:auto; padding:12px 14px 40px; flex:1}
+  .scroll::-webkit-scrollbar{width:9px}
+  .scroll::-webkit-scrollbar-thumb{background:#333c49;border-radius:9px}
+
+  fieldset{border:1px solid var(--line); border-radius:var(--r); margin:0 0 12px; padding:10px 12px 12px; background:var(--panel2)}
+  legend{font-size:12px;color:var(--gold);padding:0 6px;font-weight:600}
+  legend button.mini{
+    background:transparent;border:1px solid var(--line);color:var(--dim);
+    border-radius:6px;font:inherit;font-size:10px;padding:1px 6px;margin-inline-start:7px;
+    cursor:pointer;line-height:1.5;vertical-align:1px
+  }
+  legend button.mini:hover{border-color:var(--gold);color:var(--gold2);background:#2a2210}
+  label{display:block;font-size:12px;color:var(--dim);margin:8px 0 4px}
+  label.resettable{user-select:none;cursor:default}
+  label.resettable:hover{color:var(--gold2)}
+  label.resettable:hover::after{content:'  ↺';font-size:10px;opacity:.75}
+  label.chk.resettable:hover::after{content:''}
+  .row{display:flex;gap:8px}
+  .row>*{flex:1;min-width:0}
+  input[type=text],select,textarea{
+    width:100%; background:#0f141b; color:var(--ink);
+    border:1px solid var(--line); border-radius:8px; padding:8px 9px; font:inherit;
+  }
+  input[type=text],textarea{font-size:20px; font-family:"Arabic Typesetting","Traditional Arabic","Amiri",serif; line-height:1.6}
+  select{font-size:13px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  input[type=range]{width:100%;accent-color:var(--gold);height:22px}
+  input[type=color]{width:100%;height:32px;padding:0;border:1px solid var(--line);border-radius:8px;background:#0f141b}
+  input[type=checkbox]{accent-color:var(--gold);width:16px;height:16px;vertical-align:-3px}
+  .chk{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink);margin:9px 0 2px;cursor:pointer}
+  .val{float:left;color:var(--gold2);font-variant-numeric:tabular-nums;font-size:11px}
+  .seg{display:flex;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#0f141b}
+  .seg button{
+    flex:1;background:transparent;border:0;color:var(--dim);padding:8px 4px;font:inherit;font-size:12px;cursor:pointer;
+    border-inline-start:1px solid var(--line);
+  }
+  .seg button:first-child{border:0}
+  .seg button.on{background:linear-gradient(180deg,#3a2f14,#2a2210);color:var(--gold2);font-weight:600}
+  .btn{
+    background:#232b36;border:1px solid var(--line);color:var(--ink);
+    padding:9px 10px;border-radius:9px;font:inherit;font-size:13px;cursor:pointer;width:100%
+  }
+  .btn:hover{border-color:var(--gold);color:var(--gold2)}
+  .btn.primary{background:linear-gradient(180deg,var(--gold),#a3803a);color:#1a1305;font-weight:700;border-color:#7d612a}
+  .btn.primary:hover{color:#1a1305;filter:brightness(1.08)}
+  .hint{font-size:11px;color:var(--dim);line-height:1.6;margin:6px 0 0}
+  .badge{display:inline-block;font-size:10px;padding:2px 6px;border-radius:20px;background:#22303c;color:var(--accent);margin-inline-start:6px}
+  .badge.warn{background:#3a2a16;color:#e0a955}
+  .badge.ok{background:#1d3326;color:#63c98c}
+
+  /* glyph chips */
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;direction:rtl}
+  .chip{
+    min-width:34px;height:38px;padding:0 6px;border-radius:8px;background:#0f141b;border:1px solid var(--line);
+    color:var(--ink);font-size:22px;line-height:36px;text-align:center;cursor:pointer;
+    font-family:"Arabic Typesetting","Traditional Arabic","Amiri",serif;
+  }
+  .chip.on{border-color:var(--gold);background:#2a2210;color:var(--gold2)}
+  .chip.edited{box-shadow:inset 0 -3px 0 var(--accent)}
+
+  /* ---------- stage ---------- */
+  .stage{flex:1;display:flex;flex-direction:column;min-width:0;background:
+    radial-gradient(1200px 600px at 50% 0%, #182029, #0b0e12 70%)}
+  .toolbar{
+    display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);
+    background:rgba(15,20,27,.7);backdrop-filter:blur(6px);flex-wrap:wrap
+  }
+  .toolbar .btn{width:auto;padding:8px 14px}
+  .spacer{flex:1}
+  /* min-height:0 stops this flex item refusing to shrink below its content; flex
+     centring (not grid) keeps the canvas's max-height:100% resolving against the real
+     container height — an auto-sized grid row would grow to the canvas and overflow,
+     which cut the design off on landscape phones. */
+  .canvasWrap{flex:1;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto}
+  #canvas{
+    max-width:100%;max-height:100%;
+    background-image:linear-gradient(45deg,#20262e 25%,transparent 25%),linear-gradient(-45deg,#20262e 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#20262e 75%),linear-gradient(-45deg,transparent 75%,#20262e 75%);
+    background-size:22px 22px;background-position:0 0,0 11px,11px -11px,-11px 0;
+    border-radius:8px; box-shadow:0 18px 50px rgba(0,0,0,.55)
+  }
+  .status{padding:6px 14px;font-size:11px;color:var(--dim);border-top:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap}
+
+  /* print */
+  #printArea{display:none}
+  @media print{
+    html,body{height:auto;overflow:visible;background:#fff}
+    body>.app{display:none!important}
+    #printArea{display:block!important;text-align:center}
+    #printArea img{max-width:100%;max-height:100vh}
+    @page{margin:10mm}
+  }
+  @media (max-width:900px){
+    .app{flex-direction:column}
+    /* stacked: keep the preview on top and the controls below it */
+    .side{width:100%;min-width:0;height:52%;border:0;border-top:1px solid var(--line);order:0}
+    .stage{height:48%;order:0}
+    /* touch: 16px stops iOS zooming the page when a field takes focus */
+    select,input[type=text],textarea{font-size:16px}
+    .seg button{font-size:13px;padding:11px 4px}
+    .btn{padding:11px 12px}
+    .chip{min-width:44px;height:44px;line-height:42px;font-size:24px}
+    input[type=range]{height:34px}
+    label{font-size:13px;margin:10px 0 4px}
+    .toolbar{gap:6px;padding:8px 10px}
+    .toolbar .btn{padding:12px 12px;font-size:13px}
+    .canvasWrap{padding:8px}
+    legend button.mini{padding:8px 10px;font-size:11px}
+    .scroll{padding:12px 12px 60px}
+  }
+  /* landscape phone: vertical space is the scarce one, so go back to side-by-side */
+  @media (max-width:900px) and (min-width:600px) and (max-height:540px){
+    .app{flex-direction:row}
+    .side{width:300px;min-width:270px;height:100%;order:-1;
+          border:0;border-inline-end:1px solid var(--line)}
+    .stage{height:100%}
+  }
+  /* double-tap must reset a control, not zoom the page */
+  .resettable,.btn,.chip,.seg button,legend button.mini,#btnPanel{touch-action:manipulation}
+  /* mobile-only: collapse the settings panel to give the design the full height */
+  #btnPanel{display:none}
+  @media (max-width:900px){
+    #btnPanel{display:inline-block}
+    .app.wide .side{display:none}
+    .app.wide .stage{height:100%}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ STAGE ============ -->
+  <div class="stage">
+    <div class="toolbar">
+      <button class="btn primary" id="btnPng">⬇ تنزيل PNG</button>
+      <button class="btn" id="btnJpg">⬇ JPG</button>
+      <button class="btn" id="btnPrint">🖶 طباعة</button>
+      <button class="btn" id="btnCopy">⧉ نسخ الصورة</button>
+      <button class="btn" id="btnPanel">⛶ تكبير المعاينة</button>
+      <span class="spacer"></span>
+      <select id="exportScale" style="width:auto">
+        <option value="1">جودة ١×</option>
+        <option value="2" selected>جودة ٢×</option>
+        <option value="3">جودة ٣×</option>
+      </select>
+      <button class="btn" id="btnReset">↺ تصفير</button>
+    </div>
+    <div class="canvasWrap"><canvas id="canvas"></canvas></div>
+    <div class="status">
+      <span id="stFont">—</span><span id="stGlyphs">—</span><span id="stSize">—</span><span id="stMsg"></span>
+    </div>
+  </div>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="side">
+    <header>
+      <div class="logo">نـ</div>
+      <div>
+        <h1>نقش — العبارات المتداخلة</h1>
+        <p>خطوط عربية متشابكة تُقرأ من الجهتين</p>
+      </div>
+    </header>
+
+    <div class="scroll">
+
+      <p class="hint" style="margin:0 0 10px">💡 انقر مرّتين على اسم أي مُنزلق أو خيار لتصفيره وحده، أو استخدم زر ↺ في عنوان القسم لتصفير القسم كاملاً.</p>
+
+      <fieldset>
+        <legend>العبارتان</legend>
+        <label>العبارة الأولى</label>
+        <input type="text" id="t1" value="ما شاء الله" dir="rtl">
+        <label>العبارة الثانية <span class="badge" id="bMuth" style="display:none">مطابقة للأولى</span></label>
+        <input type="text" id="t2" value="تبارك الله" dir="rtl">
+        <div class="row" style="margin-top:8px">
+          <button class="btn" id="btnSwap">⇅ تبديل</button>
+          <select id="preset"><option value="">— عبارات جاهزة —</option></select>
+        </div>
+        <label class="chk"><input type="checkbox" id="muthanna"> نمط «مثنّى»: انعكاس العبارة الأولى نفسها</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>الخط</legend>
+        <label>نوع الخط <span id="fontSupport"></span></label>
+        <select id="font"></select>
+        <div class="row">
+          <div>
+            <label>محرّك التشكيل</label>
+            <select id="engine">
+              <option value="glyph">تحكّم بكل حرف (نقش)</option>
+              <option value="native">توافقي (تشكيل المتصفح)</option>
+            </select>
+          </div>
+          <div>
+            <label>الوزن</label>
+            <select id="weight"><option value="400">عادي</option><option value="700">عريض</option></select>
+          </div>
+        </div>
+        <label>تحميل خط من الجهاز (ttf / otf / woff)</label>
+        <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2" multiple style="font-size:12px;color:var(--dim)">
+        <label>أو اقرأ مجلّد خطوط كاملاً</label>
+        <input type="file" id="fontDir" webkitdirectory directory multiple style="font-size:12px;color:var(--dim)">
+        <p class="hint" id="fontsFolderNote">يُحمَّل مجلّد <code>fonts/</code> المرفق بالبرنامج تلقائياً عند تشغيله من خادم أو من GitHub Pages.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>التركيب والاتجاه</legend>
+        <label>ترتيب العبارتين</label>
+        <div class="seg" id="segLayout">
+          <button data-v="stack" class="on">عمودي (فوق بعض)</button>
+          <button data-v="side">أفقي (بجانب بعض)</button>
+          <button data-v="overlay">متطابق (فوق بعضها)</button>
+        </div>
+        <label style="margin-top:10px">انعكاس العبارة الثانية</label>
+        <div class="seg" id="segMirror">
+          <button data-v="none">بدون</button>
+          <button data-v="h">أفقي ⇄</button>
+          <button data-v="v" class="on">عمودي ⇅</button>
+          <button data-v="hv">١٨٠°</button>
+        </div>
+        <label>مقدار التداخل <span class="val" id="vOverlap"></span></label>
+        <input type="range" id="overlap" min="-30" max="100" value="30">
+        <label>إزاحة أفقية للعبارة الثانية <span class="val" id="vShift"></span></label>
+        <input type="range" id="shift" min="-100" max="100" value="0">
+        <label>نمط الدمج عند التقاطع</label>
+        <select id="blend">
+          <option value="source-over">عادي (تراكب)</option>
+          <option value="multiply">تعشيق داكن (multiply)</option>
+          <option value="screen">تعشيق فاتح (screen)</option>
+          <option value="difference">فرق (difference)</option>
+          <option value="xor">تفريغ التقاطع (xor)</option>
+          <option value="overlay">overlay</option>
+          <option value="lighter">توهّج (lighter)</option>
+        </select>
+        <p class="hint">أثر الدمج يظهر في مواضع تقاطع العبارتين فقط. إن لم تلاحظه فزد «مقدار التداخل» أو استخدم ترتيب «متطابق».</p>
+        <label class="chk"><input type="checkbox" id="weave" checked> حاشية فاصلة عند التشابك (تعطي إحساس التضفير)</label>
+        <label>سماكة الحاشية <span class="val" id="vWeaveW"></span></label>
+        <input type="range" id="weaveW" min="1" max="40" value="10">
+        <label>دوران التركيب كاملاً <span class="val" id="vRotAll"></span></label>
+        <input type="range" id="rotAll" min="-45" max="45" value="0">
+      </fieldset>
+
+      <fieldset>
+        <legend>النقش وتعديل الحروف</legend>
+        <label>المدّ (الكشيدة) <span class="val" id="vKash"></span></label>
+        <input type="range" id="kash" min="0" max="200" value="35">
+        <label>تباعد الحروف <span class="val" id="vTrack"></span></label>
+        <input type="range" id="track" min="-25" max="60" value="-4">
+        <label>تقوّس السطر <span class="val" id="vArc"></span></label>
+        <input type="range" id="arc" min="-70" max="70" value="0">
+        <label>تمدّد رأسي للحروف <span class="val" id="vSy"></span></label>
+        <input type="range" id="sy" min="60" max="190" value="112">
+        <label>تمدّد أفقي للحروف <span class="val" id="vSx"></span></label>
+        <input type="range" id="sx" min="60" max="180" value="100">
+        <label>تمايل الحروف <span class="val" id="vSlant"></span></label>
+        <input type="range" id="slant" min="-25" max="25" value="0">
+        <label>تعرّج الحروف (صعود وهبوط) <span class="val" id="vWave"></span></label>
+        <input type="range" id="wave" min="0" max="60" value="0">
+      </fieldset>
+
+      <fieldset>
+        <legend>تعديل حرف بعينه</legend>
+        <label>السطر</label>
+        <div class="seg" id="segLine">
+          <button data-v="1" class="on">العبارة الأولى</button>
+          <button data-v="2">العبارة الثانية</button>
+        </div>
+        <div class="chips" id="chips"></div>
+        <div id="glyphEditor" style="display:none;margin-top:10px;border-top:1px solid var(--line);padding-top:8px">
+          <label>عرض الحرف <span class="val" id="vGsx"></span></label>
+          <input type="range" id="gsx" min="30" max="400" value="100">
+          <label>ارتفاع الحرف <span class="val" id="vGsy"></span></label>
+          <input type="range" id="gsy" min="30" max="300" value="100">
+          <label>دوران الحرف <span class="val" id="vGrot"></span></label>
+          <input type="range" id="grot" min="-180" max="180" value="0">
+          <label>إزاحة أفقية <span class="val" id="vGdx"></span></label>
+          <input type="range" id="gdx" min="-150" max="150" value="0">
+          <label>إزاحة عمودية <span class="val" id="vGdy"></span></label>
+          <input type="range" id="gdy" min="-200" max="200" value="0">
+          <label>مدّ بعد هذا الحرف <span class="val" id="vGk"></span></label>
+          <input type="range" id="gk" min="0" max="600" value="0">
+          <div class="row" style="margin-top:8px">
+            <button class="btn" id="btnGReset">تصفير الحرف</button>
+            <button class="btn" id="btnGResetAll">تصفير كل الحروف</button>
+          </div>
+        </div>
+        <p class="hint">اختر حرفاً من الأعلى ثم عدّل شكله وامتداده. الحروف المعدّلة تُعلَّم بخط أزرق. (يعمل مع محرّك «تحكّم بكل حرف»)</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>الألوان والحبر</legend>
+        <div class="row">
+          <div><label>لون العبارة الأولى</label><input type="color" id="c1" value="#d9b46a"></div>
+          <div><label>لون العبارة الثانية</label><input type="color" id="c2" value="#c9762f"></div>
+        </div>
+        <label class="chk"><input type="checkbox" id="grad"> تدرّج لوني للحبر</label>
+        <label>نمط التدرّج</label>
+        <select id="gradMode">
+          <option value="own">لكل عبارة تدرّجها من لونها الأساسي</option>
+          <option value="shared">تدرّج واحد للعبارتين معاً</option>
+        </select>
+        <div class="row">
+          <div><label id="lg1">نهاية تدرّج العبارة الأولى</label><input type="color" id="g1" value="#f3d79a"></div>
+          <div><label id="lg2">نهاية تدرّج العبارة الثانية</label><input type="color" id="g2" value="#8a4a12"></div>
+        </div>
+        <label>اتجاه التدرّج</label>
+        <select id="gradDir">
+          <option value="v">عمودي (أعلى ← أسفل)</option>
+          <option value="h">أفقي (يمين ← يسار)</option>
+          <option value="d">مائل</option>
+        </select>
+        <label>سماكة الحدّ (القلم الخارجي) <span class="val" id="vStroke"></span></label>
+        <input type="range" id="stroke" min="0" max="30" value="0">
+        <div class="row">
+          <div><label>لون الحدّ</label><input type="color" id="strokeC" value="#20160a"></div>
+          <div><label>الوهج/الظل</label><input type="color" id="glowC" value="#000000"></div>
+        </div>
+        <label class="chk"><input type="checkbox" id="outlineOnly"> حروف مفرّغة (حدّ فقط)</label>
+        <label>قوّة الظل <span class="val" id="vGlow"></span></label>
+        <input type="range" id="glow" min="0" max="60" value="0">
+      </fieldset>
+
+      <fieldset>
+        <legend>اللوحة والإطار</legend>
+        <label>مقاس اللوحة</label>
+        <select id="size">
+          <option value="auto">تلقائي (يتبع شكل التصميم)</option>
+          <option value="2000x2000">مربع ٢٠٠٠×٢٠٠٠</option>
+          <option value="2400x1500" selected>أفقي ٢٤٠٠×١٥٠٠</option>
+          <option value="1500x2400">رأسي ١٥٠٠×٢٤٠٠</option>
+          <option value="3000x1200">شريط ٣٠٠٠×١٢٠٠</option>
+          <option value="3508x2480">A4 أفقي (٣٠٠ نقطة)</option>
+          <option value="2480x3508">A4 رأسي (٣٠٠ نقطة)</option>
+        </select>
+        <label>الخلفية</label>
+        <select id="bgMode">
+          <option value="transparent">شفافة</option>
+          <option value="solid" selected>لون واحد</option>
+          <option value="grad">تدرّج</option>
+          <option value="paper">ورق عتيق</option>
+        </select>
+        <div class="row">
+          <div><label>لون الخلفية ١</label><input type="color" id="bg1" value="#12161c"></div>
+          <div><label>لون الخلفية ٢</label><input type="color" id="bg2" value="#000000"></div>
+        </div>
+        <label>الإطار</label>
+        <select id="frame">
+          <option value="none">بدون</option>
+          <option value="double">خط مزدوج</option>
+          <option value="circle">دائري</option>
+          <option value="oval">بيضاوي</option>
+          <option value="corners">زخرفة أركان</option>
+          <option value="star8">نجمة ثمانية</option>
+        </select>
+        <div class="row">
+          <div><label>لون الإطار</label><input type="color" id="frameC" value="#d9b46a"></div>
+          <div><label>سماكة الإطار <span class="val" id="vFrameW"></span></label><input type="range" id="frameW" min="1" max="30" value="6"></div>
+        </div>
+        <label>الهامش <span class="val" id="vPad"></span></label>
+        <input type="range" id="pad" min="2" max="30" value="10">
+      </fieldset>
+
+      <fieldset>
+        <legend>كيف تُقرأ من الجهتين؟</legend>
+        <p class="hint">
+          • <b>١٨٠°</b> + ترتيب <b>عمودي</b>: العبارة السفلية تُقرأ صحيحة إذا قلبت الورقة رأساً على عقب — نقش يُقرأ من الجهتين فعلياً.<br>
+          • <b>عمودي ⇅</b> + ترتيب <b>عمودي</b>: انعكاس مرآتي أسفل السطر (شكل الماء)، وهو الأجمل زخرفياً.<br>
+          • <b>أفقي ⇄</b> + ترتيب <b>أفقي</b>: النقش <b>المثنّى</b> المتناظر يمنة ويسرة — فعّل «مثنّى» ليكون النصف الثاني نفس العبارة.<br>
+          • ترتيب <b>متطابق</b> مع نمط دمج <b>تفريغ التقاطع</b>: تشابك كامل بين العبارتين في مساحة واحدة.
+        </p>
+      </fieldset>
+    </div>
+  </aside>
+</div>
+
+<div id="printArea"><img id="printImg" alt=""></div>
+
+<script>
+"use strict";
+/* ================================================================
+   نقش — Arabic interlocking calligraphy composer
+   1) Arabic shaper  (Unicode Presentation Forms-B) → per-glyph control
+   2) Line layout    (kashida, tracking, arc, wave, per-glyph tweaks)
+   3) Composition    (stack / side / overlay + mirror + weave halo)
+   4) Output         (PNG / JPG / print / clipboard)
+   ================================================================ */
+
+/* ---------------- 1. SHAPER ---------------- */
+// char -> [isolated, final, initial, medial]  (0 = form does not exist)
+const F = {
+ 'ء':[0xFE80,0,0,0],
+ 'آ':[0xFE81,0xFE82,0,0], 'أ':[0xFE83,0xFE84,0,0], 'ؤ':[0xFE85,0xFE86,0,0],
+ 'إ':[0xFE87,0xFE88,0,0], 'ئ':[0xFE89,0xFE8A,0xFE8B,0xFE8C], 'ا':[0xFE8D,0xFE8E,0,0],
+ 'ب':[0xFE8F,0xFE90,0xFE91,0xFE92], 'ة':[0xFE93,0xFE94,0,0],
+ 'ت':[0xFE95,0xFE96,0xFE97,0xFE98], 'ث':[0xFE99,0xFE9A,0xFE9B,0xFE9C],
+ 'ج':[0xFE9D,0xFE9E,0xFE9F,0xFEA0], 'ح':[0xFEA1,0xFEA2,0xFEA3,0xFEA4],
+ 'خ':[0xFEA5,0xFEA6,0xFEA7,0xFEA8], 'د':[0xFEA9,0xFEAA,0,0], 'ذ':[0xFEAB,0xFEAC,0,0],
+ 'ر':[0xFEAD,0xFEAE,0,0], 'ز':[0xFEAF,0xFEB0,0,0],
+ 'س':[0xFEB1,0xFEB2,0xFEB3,0xFEB4], 'ش':[0xFEB5,0xFEB6,0xFEB7,0xFEB8],
+ 'ص':[0xFEB9,0xFEBA,0xFEBB,0xFEBC], 'ض':[0xFEBD,0xFEBE,0xFEBF,0xFEC0],
+ 'ط':[0xFEC1,0xFEC2,0xFEC3,0xFEC4], 'ظ':[0xFEC5,0xFEC6,0xFEC7,0xFEC8],
+ 'ع':[0xFEC9,0xFECA,0xFECB,0xFECC], 'غ':[0xFECD,0xFECE,0xFECF,0xFED0],
+ 'ف':[0xFED1,0xFED2,0xFED3,0xFED4], 'ق':[0xFED5,0xFED6,0xFED7,0xFED8],
+ 'ك':[0xFED9,0xFEDA,0xFEDB,0xFEDC], 'ل':[0xFEDD,0xFEDE,0xFEDF,0xFEE0],
+ 'م':[0xFEE1,0xFEE2,0xFEE3,0xFEE4], 'ن':[0xFEE5,0xFEE6,0xFEE7,0xFEE8],
+ 'ه':[0xFEE9,0xFEEA,0xFEEB,0xFEEC], 'و':[0xFEED,0xFEEE,0,0],
+ 'ى':[0xFEEF,0xFEF0,0,0], 'ي':[0xFEF1,0xFEF2,0xFEF3,0xFEF4],
+ // Persian / Urdu extras
+ 'پ':[0xFB56,0xFB57,0xFB58,0xFB59], 'چ':[0xFB7A,0xFB7B,0xFB7C,0xFB7D],
+ 'ژ':[0xFB8A,0xFB8B,0,0], 'ک':[0xFB8E,0xFB8F,0xFB90,0xFB91],
+ 'گ':[0xFB92,0xFB93,0xFB94,0xFB95], 'ی':[0xFBFC,0xFBFD,0xFBFE,0xFBFF]
+};
+const LAMALEF = { 'آ':[0xFEF5,0xFEF6], 'أ':[0xFEF7,0xFEF8], 'إ':[0xFEF9,0xFEFA], 'ا':[0xFEFB,0xFEFC] };
+const TATWEEL = 'ـ';
+const isMark = c => /[ً-ٰٟۖ-ۭؐ-ؚ]/.test(c);
+const isLetter = c => !!F[c];
+const dual = c => !!F[c] && F[c][2] !== 0;          // can join to the following letter
+const canBack = c => (!!F[c] && F[c][1] !== 0) || c === TATWEEL; // can receive a join from the right
+const fwd = c => dual(c) || c === TATWEEL;
+
+// Kashida desirability of a join, by the letter the stretch comes AFTER.
+const KW = {'ك':6,'ک':6,'س':5,'ش':5,'ص':5,'ض':5,'ط':4,'ظ':4,'ب':4,'ت':4,'ث':4,'ن':4,'ي':4,'ی':4,'ل':3,'ف':3,'ق':3,'م':2,'ه':2,'ع':2,'غ':2,'ج':2,'ح':2,'خ':2,'ئ':2,'پ':4,'چ':2,'گ':6};
+
+/** Shape an Arabic string into a right-to-left ordered array of glyph clusters. */
+function shape(text){
+  // pass A: base units, marks folded into the preceding unit, lam-alef merged
+  const src = [...text], units = [];
+  for(let i=0;i<src.length;i++){
+    const c = src[i];
+    if(isMark(c)){ if(units.length) units[units.length-1].marks += c; continue; }
+    if(c === 'ل' && LAMALEF[src[i+1]]){ units.push({base:'ل', lig:src[i+1], marks:''}); i++; continue; }
+    units.push({base:c, lig:null, marks:''});
+  }
+  // pass B: choose the presentation form of every unit
+  const out = [];
+  for(let i=0;i<units.length;i++){
+    const u = units[i], p = units[i-1], n = units[i+1];
+    const prevConn = !!p && fwd(p.base) && !p.lig;
+    let display, joinNext = false, joinPrev = prevConn;
+    if(u.lig){                                        // لا  ligature: never joins forward
+      display = String.fromCharCode(LAMALEF[u.lig][prevConn?1:0]);
+    }else if(u.base === TATWEEL){
+      display = TATWEEL; joinNext = true;
+    }else if(isLetter(u.base)){
+      const f = F[u.base];
+      const nextConn = !!n && canBack(n.base);
+      let code;
+      if(prevConn && nextConn && f[3]) { code = f[3]; joinNext = true; }
+      else if(prevConn && f[1])        { code = f[1]; }
+      else if(nextConn && f[2])        { code = f[2]; joinNext = true; }
+      else                             { code = f[0]; joinPrev = false; }
+      display = String.fromCharCode(code);
+    }else{
+      display = u.base; joinPrev = false;             // space / punctuation / digits
+    }
+    out.push({ raw:u.base + (u.lig||''), display: display + u.marks, joinNext, joinPrev,
+               isSpace: /\s/.test(u.base), kw: KW[u.base] || (isLetter(u.base)?1:0) });
+  }
+  return out;
+}
+
+/* ---------------- 2. FONTS ---------------- */
+const SYS_FONTS = ['Arabic Typesetting','Traditional Arabic','Simplified Arabic','Andalus','Sakkal Majalla','Aldhabi','Urdu Typesetting','Microsoft Uighur','Segoe UI'];
+const WEB_FONTS = ['Amiri','Aref Ruqaa','Scheherazade New','Reem Kufi','Rakkas','Lalezar','Mirza','Jomhuria','Qahiri','Marhey','Cairo','Gulzar','Noto Nastaliq Urdu'];
+const probe = document.createElement('canvas').getContext('2d');
+
+const NOFONT = '"no-such-font-zz-9"';    // never installed ⇒ falls back to the default font
+function textW(font, s, px){ probe.font = px+'px "'+font+'", monospace'; return probe.measureText(s).width; }
+function fontAvailable(name){
+  const s = 'ابجدهوزحطي مقياس';
+  return Math.abs(textW('monospace', s, 60) - textW(name, s, 60)) > 0.5;
+}
+
+// Glyph-coverage probe: rasterise one character and hash it. A character the font
+// lacks is drawn by the system fallback, so its hash equals the NOFONT render.
+const hcv = document.createElement('canvas'); hcv.width = hcv.height = 120;
+const hx = hcv.getContext('2d');
+function glyphHash(fontSpec, ch){
+  hx.clearRect(0,0,120,120);
+  hx.font = fontSpec; hx.textBaseline = 'middle'; hx.fillStyle = '#000';
+  hx.fillText(ch, 8, 64);
+  const d = hx.getImageData(0,0,120,120).data;
+  let h = 2166136261;
+  for(let i=3;i<d.length;i+=4){ h ^= d[i]; h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+const formsCache = new Map();
+/** Does the font really contain the Presentation-Forms-B glyphs the glyph engine needs? */
+function supportsForms(font){
+  if(formsCache.has(font)) return formsCache.get(font);
+  const spec = '70px "' + font + '"', fb = '70px ' + NOFONT;
+  const applied = glyphHash(spec,'م') !== glyphHash(fb,'م');   // is the font actually in use?
+  let bad = 0;
+  for(const ch of ['ﻡ','ﻟ','ﺑ','ﺳ','ﻻ']) if(glyphHash(spec,ch) === glyphHash(fb,ch)) bad++;
+  const ok = !applied || bad <= 1;
+  if(applied) formsCache.set(font, ok);   // never cache a verdict taken before the font loaded
+  return ok;
+}
+
+/* ---- fonts loaded from a folder ------------------------------------------
+ * Three sources, one registration path:
+ *   1. the bundled fonts/ folder, listed by fonts/fonts.json (needs http(s):
+ *      a page opened as file:// cannot fetch, and no browser can list a directory)
+ *   2. a folder the user picks from their device (works everywhere, incl. file://)
+ *   3. individual font files
+ */
+const FONT_EXT = /\.(ttf|otf|woff2?|ttc)$/i;
+const localFonts = new Set();
+
+function fontOptGroup(){
+  const sel = $('font');
+  let g = sel.querySelector('optgroup[label="خطوط محلّية"]');
+  if(!g){ g = document.createElement('optgroup'); g.label = 'خطوط محلّية'; sel.insertBefore(g, sel.firstChild); }
+  return g;
+}
+/** register one face and list it; `src` is an ArrayBuffer or a URL */
+async function addFont(name, src){
+  if(localFonts.has(name)) return true;
+  try{
+    const face = new FontFace(name, typeof src === 'string' ? 'url("'+src+'")' : src);
+    await face.load();
+    document.fonts.add(face);
+    localFonts.add(name);
+    const o = document.createElement('option'); o.value = name; o.textContent = name;
+    fontOptGroup().appendChild(o);
+    return true;
+  }catch(e){ return false; }
+}
+async function addFontFiles(files){
+  let ok = 0, bad = 0;
+  for(const f of files){
+    if(!FONT_EXT.test(f.name)) continue;
+    const name = f.name.replace(/\.[^.]+$/, '');
+    (await addFont(name, await f.arrayBuffer())) ? ok++ : bad++;
+  }
+  $('stMsg').textContent = ok
+    ? 'أُضيف ' + ok + ' خط' + (bad ? ' • تعذّر ' + bad : '')
+    : 'تعذّر تحميل الخطوط';
+  return ok;
+}
+/** load the folder shipped next to the page, if we are served over http(s) */
+async function loadBundledFonts(){
+  try{
+    const res = await fetch('fonts/fonts.json', {cache:'no-cache'});
+    if(!res.ok) return 0;
+    const list = await res.json();
+    let ok = 0;
+    for(const item of (Array.isArray(list) ? list : list.fonts || [])){
+      const file = typeof item === 'string' ? item : item.file;
+      if(!file || !FONT_EXT.test(file)) continue;
+      const name = (typeof item === 'object' && item.name) || file.replace(/\.[^.]+$/, '');
+      if(await addFont(name, 'fonts/' + encodeURIComponent(file))) ok++;
+    }
+    if(ok){
+      $('fontsFolderNote').textContent = 'حُمِّل ' + ok + ' خط من مجلّد fonts/';
+      const saved = savedFontName();               // re-apply a saved choice now it exists
+      if(saved && [...$('font').options].some(o => o.value === saved)) $('font').value = saved;
+      schedule();
+    }
+    return ok;
+  }catch(e){ return 0; }                            // file:// or no folder — stay quiet
+}
+function savedFontName(){
+  try{ const o = JSON.parse(localStorage.getItem(KEY)); return o && o['#font']; }catch(e){ return null; }
+}
+
+// Web fonts load lazily and drawing to a canvas does not reliably trigger the
+// download, so warm the face explicitly (and via a hidden node) before rendering.
+const warm = document.createElement('div');
+warm.setAttribute('aria-hidden','true');
+warm.style.cssText = 'position:fixed;left:-9999px;top:0;font-size:40px;opacity:0';
+warm.textContent = 'نقش ﻧﻘﺶ';
+document.addEventListener('DOMContentLoaded', ()=>document.body.appendChild(warm));
+async function ensureFont(name, weight){
+  warm.style.font = (weight||400) + ' 40px "' + name + '"';
+  if(!document.body.contains(warm)) document.body.appendChild(warm);
+  try{ await document.fonts.load((weight||400) + ' 70px "' + name + '"', 'نقش ﻧﻘﺶ'); }catch(e){}
+  formsCache.delete(name);
+}
+
+/* ---------------- 3. LINE LAYOUT & RENDER ---------------- */
+const OFF = () => document.createElement('canvas');
+// Context for canvases that get read back with getImageData.
+// Measured: {willReadFrequently:true} speeds up getImageData in isolation (80→58ms on
+// 7.5 Mpx) but loses overall here (64→75ms), because these canvases are drawn to heavily
+// and read only once — the CPU-side backing costs more in rasterising than it saves in
+// readback. Left on the default (GPU) path deliberately; don't "optimise" this back.
+const readCtx = cv => cv.getContext('2d');
+
+/* ---- WebAssembly kernel ----------------------------------------------------
+ * Measuring the ink bounding box is the only genuinely compute-bound step in a
+ * render: every phrase is scanned pixel by pixel, twice per pass, and a phrase
+ * canvas runs to several megapixels. Everything else in this file is Canvas 2D
+ * and DOM work, which WebAssembly cannot touch without calling back into JS.
+ * So that one scan is compiled to wasm; the rest stays JS by necessity.
+ *
+ * The module below is hand-assembled (193 bytes, no build step). Source:
+ *   (func (export "b") (param $w i32) (param $h i32) (param $t i32) (param $out i32)
+ *     ... row/column loop, select-based min/max, writes x0,y0,x1,y1 to $out ...)
+ * It imports its memory as "e"."m" so JS controls growth.
+ */
+const WASM_B64 =
+  'AGFzbQEAAAABCAFgBH9/f38AAggBAWUBbQIAAQMCAQAHBQEBYgAACpcBAZQBAQd/IAAhB0F/IQgg' +
+  'ASEJQX8hCkEDIQZBACEFA0BBACEEA0AgBi0AACACSwRAIAQgByAEIAdIGyEHIAQgCCAEIAhKGyEI' +
+  'IAUgCSAFIAlIGyEJIAUhCgsgBkEEaiEGIARBAWoiBCAASA0ACyAFQQFqIgUgAUgNAAsgAyAHNgIA' +
+  'IAMgCTYCBCADIAg2AgggAyAKNgIMCw==';
+
+let wasmMem = null, wasmScan = null;
+try{
+  const bin = Uint8Array.from(atob(WASM_B64), c => c.charCodeAt(0));
+  wasmMem = new WebAssembly.Memory({ initial: 1 });
+  wasmScan = new WebAssembly.Instance(new WebAssembly.Module(bin), { e:{ m: wasmMem } }).exports.b;
+}catch(e){ wasmScan = null; }              // unsupported or blocked → JS fallback
+
+/** make sure the wasm heap holds at least `need` bytes (grow detaches the old buffer) */
+function wasmRoom(need){
+  const pages = Math.ceil((need + 64) / 65536) - wasmMem.buffer.byteLength / 65536;
+  if(pages > 0) wasmMem.grow(pages);
+}
+
+/** reference implementation, kept as the fallback and as the wasm's oracle */
+function inkBoxJS(d, w, h, a){
+  let x0=w, y0=h, x1=-1, y1=-1;
+  for(let y=0;y<h;y++){
+    const row = y*w*4;
+    for(let x=0;x<w;x++){
+      if(d[row + x*4 + 3] > a){
+        if(x<x0)x0=x; if(x>x1)x1=x;
+        if(y<y0)y0=y; if(y>y1)y1=y;
+      }
+    }
+  }
+  return x1 < 0 ? null : {x:x0, y:y0, w:x1-x0+1, h:y1-y0+1};
+}
+
+/** bounding box of the non-transparent pixels: {x,y,w,h}, or null when blank */
+function inkBox(cv, minAlpha){
+  const w = cv.width, h = cv.height;
+  if(!w || !h) return null;
+  const a = minAlpha || 4;
+  const d = readCtx(cv).getImageData(0,0,w,h).data;
+  if(!wasmScan) return inkBoxJS(d, w, h, a);
+  const bytes = w*h*4;
+  wasmRoom(bytes + 16);
+  new Uint8Array(wasmMem.buffer).set(d, 0);
+  wasmScan(w, h, a, bytes);                       // results land at out = bytes (4-aligned)
+  const r = new Int32Array(wasmMem.buffer, bytes, 4);
+  return r[2] < 0 ? null : {x:r[0], y:r[1], w:r[2]-r[0]+1, h:r[3]-r[1]+1};
+}
+/** trim transparent margins; returns a new canvas (or null when blank) */
+function trim(cv){
+  const b = inkBox(cv);
+  if(!b) return null;
+  const out = OFF(); out.width = b.w; out.height = b.h;
+  out.getContext('2d').drawImage(cv, -b.x, -b.y);
+  return out;
+}
+
+/**
+ * Render one phrase to its own canvas.
+ * s: global state, px: font size, tweaks: per-glyph overrides, color/gradient info
+ */
+function renderLine(text, px, s, tweaks, color, endColor){
+  const fam = '"'+s.font+'", "Amiri", serif';
+  const font = s.weight+' '+px+'px '+fam;
+  const useGlyph = s.engine === 'glyph' && s.formsOK;
+
+  // ---- build the item list (glyph clusters + kashida stretchers) ----
+  let items = [];
+  if(useGlyph){
+    const gl = shape(text);
+    // total requested extra width from the global kashida slider
+    const joins = [];
+    for(let i=0;i<gl.length-1;i++) if(gl[i].joinNext && !gl[i+1].isSpace) joins.push(i);
+    const wsum = joins.reduce((a,i)=>a+gl[i].kw,0) || 1;
+    const extraTotal = (s.kash/100) * px * Math.max(1, joins.length*0.55);
+    gl.forEach((g,i)=>{
+      const t = tweaks[i] || {};
+      items.push({ kind:'g', gi:i, display:g.display, isSpace:g.isSpace,
+                   sx:(t.sx??100)/100, sy:(t.sy??100)/100, rot:(t.rot??0), dx:(t.dx??0), dy:(t.dy??0) });
+      let ex = 0;
+      if(joins.includes(i)) ex += extraTotal * (gl[i].kw / wsum);
+      if(t.k) ex += px * t.k/100;
+      if(ex > 0.5 && g.joinNext) items.push({ kind:'k', gi:i, display:TATWEEL, extra:ex });
+    });
+  }else{
+    // native shaping: one run, kashida injected as real tatweel characters
+    let out = '', n = Math.round(s.kash/22);
+    const cs = [...text];
+    for(let i=0;i<cs.length;i++){
+      out += cs[i];
+      const a = cs[i], b = cs[i+1];
+      if(n>0 && a && b && fwd(a) && canBack(b) && !isMark(b)) out += TATWEEL.repeat(n);
+    }
+    items = [{ kind:'g', gi:0, display:out, sx:1, sy:1, rot:0, dx:0, dy:0, isSpace:false }];
+  }
+
+  // ---- measure ----
+  const ctx0 = probe; ctx0.font = font;
+  const gsx = s.sx/100, gsy = s.sy/100, track = s.track/100*px;
+  let total = 0;
+  for(const it of items){
+    if(it.kind === 'k'){
+      const base = ctx0.measureText(TATWEEL).width || px*0.2;
+      it.baseW = base; it.scale = (base + it.extra)/base; it.w = base + it.extra;
+    }else{
+      it.baseW = ctx0.measureText(it.display).width;
+      it.w = it.baseW * (it.sx*gsx);
+    }
+    total += it.w + (it.isSpace ? 0 : track);
+  }
+  total = Math.max(total - track, 1);
+
+  // ---- canvas + baseline ----
+  // headroom so a nudged or stretched letter is never clipped by its own canvas
+  let head = 0, anyOffset = false;
+  for(const k in tweaks){
+    const t = tweaks[k]; if(!t) continue;
+    if(t.dx || t.dy) anyOffset = true;
+    head = Math.max(head, (Math.abs(t.dy||0) + Math.max(0,(t.sy||100)-100))/100 * px,
+                          Math.abs(t.dx||0)/100 * px);
+  }
+  const arcAmt = s.arc/100, margin = px*2.2 + Math.abs(arcAmt)*total*0.6 + s.stroke*px/40 + head;
+  const cv = OFF();
+  cv.width  = Math.ceil(total + margin*2);
+  cv.height = Math.ceil(px*3.2 + margin*1.4 + s.wave/100*px*2 + head*2);
+  const ctx = readCtx(cv);
+
+  const baseY = cv.height*0.62;
+  const theta = arcAmt * Math.PI * 0.85;
+  const R = Math.abs(theta) < 0.02 ? 0 : total/theta;
+
+  // Ink. The gradient axis is defined once in canvas space so it spans the whole
+  // phrase; since every glyph paints under its own transform, the axis is mapped
+  // back into glyph-local space at paint time (otherwise each letter would sample
+  // a different slice of it and the gradient would vanish).
+  let gA = null, gB = null, stop0 = color, stop1 = endColor;
+  if(s.grad){
+    if(s.gradMode === 'shared'){ stop0 = s.g1; stop1 = s.g2; }   // one gradient across the design
+    const mid = margin + total/2;
+    if(s.gradDir === 'h')      { gA = [margin+total, baseY];        gB = [margin, baseY]; }
+    else if(s.gradDir === 'd') { gA = [margin+total, baseY-px*1.1]; gB = [margin, baseY+px*0.4]; }
+    else                       { gA = [mid, baseY-px*1.2];          gB = [mid, baseY+px*0.35]; }
+  }
+  // NOTE: no shadow here on purpose. A shadow drawn per line would be included in the
+  // line's measured box, and compose() derives the gap and centring from those boxes —
+  // so the glow would drag the phrases around. It is applied to the finished composition.
+
+  // ---- draw right-to-left ----
+  const slant = s.slant*Math.PI/180;
+  const lw = s.stroke*px/100;
+  /** paint the phrase; withOffsets=false ignores the per-letter nudges (dx/dy) */
+  const paint = (c, withOffsets) => {
+    c.font = font; c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+    c.lineJoin = 'round'; c.lineCap = 'round';
+    c.fillStyle = color; c.strokeStyle = s.strokeC;
+    let cursor = margin + total;                 // right edge of the next glyph
+    items.forEach((it, idx) => {
+      const cx = cursor - it.w/2;
+      cursor -= it.w + (it.isSpace ? 0 : track);
+      if(it.isSpace || !it.display.trim()) return;
+
+      // baseline point (straight or on an arc)
+      let X = cx, Y = baseY, rot = 0;
+      if(R){
+        const a = (cx - (margin + total/2))/R;
+        X = margin + total/2 + R*Math.sin(a);
+        Y = baseY - R + R*Math.cos(a);
+        rot = a;
+      }
+      if(s.wave) Y += Math.sin(idx*0.9)*s.wave/100*px*0.5;
+
+      c.save();
+      const dx = withOffsets ? (it.dx||0) : 0, dy = withOffsets ? (it.dy||0) : 0;
+      c.translate(X + dx*px/100, Y + dy*px/100);
+      c.rotate(rot + (it.rot||0)*Math.PI/180);
+      if(slant) c.transform(1,0,-Math.tan(slant),1,0,0);
+      if(it.kind === 'k') c.scale(it.scale, gsy);
+      else                c.scale(it.sx*gsx, it.sy*gsy);
+
+      if(gA){
+        const inv = c.getTransform().invertSelf();
+        const p = inv.transformPoint(new DOMPoint(gA[0], gA[1]));
+        const q = inv.transformPoint(new DOMPoint(gB[0], gB[1]));
+        const g = c.createLinearGradient(p.x, p.y, q.x, q.y);
+        g.addColorStop(0, stop0); g.addColorStop(1, stop1);
+        c.fillStyle = g;
+      }
+
+      if(s.outlineOnly){
+        c.lineWidth = Math.max(lw, px*0.02); c.strokeStyle = s.strokeC;
+        c.strokeText(it.display, 0, 0);
+      }else{
+        if(lw > 0){ c.lineWidth = lw; c.strokeText(it.display, 0, 0); }
+        c.fillText(it.display, 0, 0);
+      }
+      c.restore();
+    });
+  };
+
+  paint(ctx, true);
+
+  // The reference box ignores the per-letter nudges: moving one letter should move that
+  // letter, not re-lay-out the whole design. The nudged letter simply overhangs the box.
+  let box;
+  if(anyOffset){
+    const ref = OFF(); ref.width = cv.width; ref.height = cv.height;
+    paint(readCtx(ref), false);
+    box = inkBox(ref);
+  }else{
+    box = inkBox(cv);
+  }
+  return box ? {cv, box} : null;
+}
+
+/* ---------------- 4. COMPOSITION ---------------- */
+/** mirror a rendered line, flipping its reference box to match */
+function mirrored(line, mode){
+  if(mode === 'none' || !line) return line;
+  const cv = line.cv, b = line.box;
+  const out = OFF(); out.width = cv.width; out.height = cv.height;
+  const c = out.getContext('2d');
+  const fx = (mode === 'h' || mode === 'hv') ? -1 : 1;
+  const fy = (mode === 'v' || mode === 'hv') ? -1 : 1;
+  c.translate(fx < 0 ? cv.width : 0, fy < 0 ? cv.height : 0);
+  c.scale(fx, fy); c.drawImage(cv, 0, 0);
+  return { cv: out, box: {
+    x: fx < 0 ? cv.width  - (b.x + b.w) : b.x,
+    y: fy < 0 ? cv.height - (b.y + b.h) : b.y,
+    w: b.w, h: b.h
+  }};
+}
+/**
+ * A ring of width r hugging the outside of `cv`'s letters — the weave separator.
+ * It deliberately excludes the letters' own area: punching only the ring leaves the
+ * overlap itself intact, so a blend mode still has the other phrase to blend against.
+ */
+function halo(cv, r){
+  const out = OFF(); out.width = cv.width + r*2; out.height = cv.height + r*2;
+  const c = out.getContext('2d');
+  const N = 20;
+  for(let i=0;i<N;i++){
+    const a = i/N*Math.PI*2;
+    c.drawImage(cv, r + Math.cos(a)*r, r + Math.sin(a)*r);
+  }
+  c.globalCompositeOperation = 'destination-out';   // hollow out the glyphs themselves
+  c.drawImage(cv, r, r);
+  return out;
+}
+
+/** largest per-letter nudge in either phrase, as a fraction of the font size */
+function maxNudge(s){
+  let m = 0;
+  for(const tw of [s.tw1, s.tw2]) for(const k in tw){
+    const t = tw[k]; if(!t) continue;
+    m = Math.max(m, Math.abs(t.dx||0), Math.abs(t.dy||0));
+  }
+  return m/100;
+}
+
+/**
+ * Build the two-phrase composition at a given font size.
+ * Returns {canvas, box} where `box` is the ink's bounding box inside the canvas.
+ * Layout and fitting use `box` only, so the glow can bloom past it without
+ * changing the design's size or position.
+ */
+function compose(px, s){
+  const t2 = s.muthanna ? s.t1 : s.t2;
+  // each phrase keeps its own ink colour; the gradient shades it toward that phrase's end colour
+  const A = s.t1.trim() ? renderLine(s.t1, px, s, s.tw1, s.c1, s.g1) : null;
+  let  B = t2.trim()    ? renderLine(t2,   px, s, s.muthanna ? s.tw1 : s.tw2, s.c2, s.g2) : null;
+  if(B) B = mirrored(B, s.mirror);
+  if(!A && !B) return null;
+
+  // Layout works on the reference boxes only — never on the raw bitmaps — so a nudged
+  // letter, a glow, or a stroke can overhang without shifting anything.
+  const ov = s.overlap/100, sh = s.shift/100;
+  const aw = A ? A.box.w : 0, ah = A ? A.box.h : 0;
+  const bw = B ? B.box.w : 0, bh = B ? B.box.h : 0;
+  let W, H, ax = 0, ay = 0, bx = 0, by = 0;
+  if(!A || !B){                          // a single phrase: nothing to interlock
+    W = aw || bw; H = ah || bh;
+  }else if(s.layout === 'stack'){
+    // damped: 100% of the slider still leaves the two baselines clear of each other,
+    // so the strands interlace through their ascenders instead of colliding
+    const gap = -ov * Math.min(ah, bh) * 0.5;
+    W = Math.max(aw, bw) + Math.abs(sh)*bw;
+    H = ah + bh + gap;
+    ax = (W - aw)/2;  ay = 0;
+    bx = (W - bw)/2 + sh*bw;
+    by = ah + gap;
+  }else if(s.layout === 'side'){
+    const gap = -ov * Math.min(aw, bw) * 0.6;
+    W = aw + bw + gap;
+    H = Math.max(ah, bh) + Math.abs(sh)*bh;
+    ax = bw + gap; ay = (H - ah)/2;                 // first phrase on the right (RTL)
+    bx = 0;        by = (H - bh)/2 + sh*bh;
+  }else{                                            // overlay
+    W = Math.max(aw, bw) + Math.abs(sh)*bw;
+    H = Math.max(ah, bh);
+    ax = (W - aw)/2;  ay = (H - ah)/2;
+    bx = (W - bw)/2 + sh*bw; by = (H - bh)/2;
+  }
+
+  // union of the placed reference boxes (a shift can push one of them negative)
+  const only = A || B;
+  const x0 = A && B ? Math.min(ax, bx) : 0, y0 = A && B ? Math.min(ay, by) : 0;
+  const x1 = A && B ? Math.max(ax+aw, bx+bw) : W, y1 = A && B ? Math.max(ay+ah, by+bh) : H;
+
+  const blur = s.glow > 0 ? s.glow/100 * px * 0.5 : 0;
+  const pad = Math.ceil(px*0.5 + s.weaveW + blur*3 + maxNudge(s)*px);
+  const cv = OFF();
+  cv.width  = Math.ceil(x1-x0) + pad*2;
+  cv.height = Math.ceil(y1-y0) + pad*2;
+  const c = readCtx(cv);
+  // place each line so its reference box lands where the layout asked
+  const put = (L, lx, ly) => [pad + Math.round(lx - x0) - L.box.x, pad + Math.round(ly - y0) - L.box.y];
+  if(!A || !B){
+    const [dx, dy] = put(only, 0, 0);
+    c.drawImage(only.cv, dx, dy);
+  }else{
+    const [adx, ady] = put(A, ax, ay), [bdx, bdy] = put(B, bx, by);
+    c.drawImage(A.cv, adx, ady);
+    if(s.weave && s.weaveW > 0){
+      // erase a margin around the second phrase so the two strands read as woven
+      const r = Math.max(1, Math.round(s.weaveW * px/300));
+      c.save(); c.globalCompositeOperation = 'destination-out';
+      c.drawImage(halo(B.cv, r), bdx - r, bdy - r);
+      c.restore();
+    }
+    c.globalCompositeOperation = s.blend;
+    c.drawImage(B.cv, bdx, bdy);
+    c.globalCompositeOperation = 'source-over';
+  }
+
+  // the composition's own reference box: derived from the layout, not from the pixels
+  const box = {x: pad, y: pad, w: Math.ceil(x1-x0), h: Math.ceil(y1-y0)};
+  if(blur <= 0) return {canvas: cv, box};
+
+  // one glow behind the finished design, at identity transform so the blur is
+  // predictable and no letter moves relative to any other
+  const g = OFF(); g.width = cv.width; g.height = cv.height;
+  const gc = readCtx(g);
+  gc.shadowColor = s.glowC; gc.shadowBlur = blur;
+  gc.drawImage(cv, 0, 0);
+  gc.shadowBlur = 0;
+  gc.drawImage(cv, 0, 0);                // ink back on top of its own glow
+  return {canvas: g, box};
+}
+
+/* ---------------- 5. BACKGROUND & FRAME ---------------- */
+function paintBG(ctx, W, H, s){
+  if(s.bgMode === 'transparent') return;
+  if(s.bgMode === 'solid'){ ctx.fillStyle = s.bg1; ctx.fillRect(0,0,W,H); return; }
+  if(s.bgMode === 'grad'){
+    const g = ctx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,s.bg1); g.addColorStop(1,s.bg2);
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H); return;
+  }
+  // aged paper
+  const g = ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*0.1,W/2,H/2,Math.max(W,H)*0.75);
+  g.addColorStop(0,'#f6ecd6'); g.addColorStop(1,'#d8c29a');
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+  ctx.save(); ctx.globalAlpha = 0.06;
+  for(let i=0;i<Math.round(W*H/9000);i++){
+    ctx.fillStyle = i%3 ? '#8a6a3a' : '#5c4523';
+    ctx.fillRect(Math.random()*W, Math.random()*H, 2, 2);
+  }
+  ctx.restore();
+}
+function paintFrame(ctx, W, H, s){
+  if(s.frame === 'none') return;
+  const m = Math.min(W,H) * s.pad/100 * 0.55;
+  ctx.save();
+  ctx.strokeStyle = s.frameC; ctx.lineWidth = s.frameW * Math.min(W,H)/1200;
+  const lw = ctx.lineWidth;
+  if(s.frame === 'double'){
+    ctx.strokeRect(m, m, W-2*m, H-2*m);
+    ctx.lineWidth = lw*0.45;
+    ctx.strokeRect(m+lw*2.4, m+lw*2.4, W-2*m-lw*4.8, H-2*m-lw*4.8);
+  }else if(s.frame === 'circle'){
+    const r = Math.min(W,H)/2 - m;
+    ctx.beginPath(); ctx.arc(W/2,H/2,r,0,7); ctx.stroke();
+    ctx.lineWidth = lw*0.45; ctx.beginPath(); ctx.arc(W/2,H/2,r-lw*2.6,0,7); ctx.stroke();
+  }else if(s.frame === 'oval'){
+    ctx.beginPath(); ctx.ellipse(W/2,H/2,W/2-m,H/2-m,0,0,7); ctx.stroke();
+    ctx.lineWidth = lw*0.45;
+    ctx.beginPath(); ctx.ellipse(W/2,H/2,W/2-m-lw*2.6,H/2-m-lw*2.6,0,0,7); ctx.stroke();
+  }else if(s.frame === 'corners'){
+    const L = Math.min(W,H)*0.16, r = L*0.55;
+    const corner = (x,y,sx,sy)=>{
+      ctx.save(); ctx.translate(x,y); ctx.scale(sx,sy);
+      ctx.beginPath(); ctx.moveTo(L,0); ctx.lineTo(r,0);
+      ctx.quadraticCurveTo(0,0,0,r); ctx.lineTo(0,L); ctx.stroke();
+      ctx.beginPath(); ctx.arc(r*0.55, r*0.55, lw*1.5, 0, 7); ctx.fillStyle = s.frameC; ctx.fill();
+      ctx.restore();
+    };
+    corner(m,m,1,1); corner(W-m,m,-1,1); corner(m,H-m,1,-1); corner(W-m,H-m,-1,-1);
+  }else if(s.frame === 'star8'){
+    const R = Math.min(W,H)/2 - m;
+    for(const rot of [0, Math.PI/4]){
+      ctx.beginPath();
+      for(let i=0;i<4;i++){
+        const a = rot + i*Math.PI/2;
+        const x = W/2 + R*Math.cos(a), y = H/2 + R*Math.sin(a);
+        i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+      }
+      ctx.closePath(); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+/* ---------------- 6. STATE + UI ---------------- */
+const $ = id => document.getElementById(id);
+let cvs = $('canvas'), ctx = cvs.getContext('2d');
+// Preview and export are the same renderer at different resolutions:
+//  outScale === null  → on-screen preview, capped (a phone shows ~400 CSS px, so
+//                       rasterising 2400px of design is wasted work)
+//  outScale === n     → export/print, rendered natively at n× the design size
+let outScale = null, exporting = false, designW = 2400, designH = 1500;
+let tw1 = {}, tw2 = {}, curLine = 1, curGlyph = -1;
+let layout = 'stack', mirror = 'v';
+
+const PRESETS = [
+ 'ما شاء الله|تبارك الله','بسم الله الرحمن الرحيم|الحمد لله رب العالمين',
+ 'الحمد لله|شكراً لله','لا إله إلا الله|محمد رسول الله',
+ 'اللهم صل على محمد|وعلى آل محمد','سبحان الله|والحمد لله',
+ 'رب اشرح لي صدري|ويسر لي أمري','الصبر مفتاح الفرج|واليسر بعد العسر',
+ 'أهلاً وسهلاً|مرحباً بكم','كل عام وأنتم بخير|عيد مبارك',
+ 'اقرأ|بسم ربك','العلم نور|والجهل ظلام','الخير في الصدق|والصدق نجاة'
+];
+
+function readState(){
+  const sz = $('size').value, autoSize = sz === 'auto';
+  const [W,H] = autoSize ? [2400,1500] : sz.split('x').map(Number);
+  const bg1 = $('bg1').value;
+  const bgMode = $('bgMode').value;
+  return {
+    t1:$('t1').value, t2:$('t2').value, muthanna:$('muthanna').checked,
+    font:$('font').value, weight:$('weight').value, engine:$('engine').value,
+    layout, mirror,
+    overlap:+$('overlap').value, shift:+$('shift').value, blend:$('blend').value,
+    weave:$('weave').checked, weaveW:+$('weaveW').value, rotAll:+$('rotAll').value,
+    kash:+$('kash').value, track:+$('track').value, arc:+$('arc').value,
+    sy:+$('sy').value, sx:+$('sx').value, slant:+$('slant').value, wave:+$('wave').value,
+    c1:$('c1').value, c2:$('c2').value, grad:$('grad').checked,
+    g1:$('g1').value, g2:$('g2').value, gradDir:$('gradDir').value, gradMode:$('gradMode').value,
+    stroke:+$('stroke').value, strokeC:$('strokeC').value, glow:+$('glow').value, glowC:$('glowC').value,
+    outlineOnly:$('outlineOnly').checked,
+    W, H, autoSize, bgMode, bg1, bg2:$('bg2').value,
+    frame:$('frame').value, frameC:$('frameC').value, frameW:+$('frameW').value, pad:+$('pad').value,
+    tw1, tw2, formsOK: true
+  };
+}
+
+/** the usable area for the design: inside the padding AND inside the frame shape */
+function contentBox(s){
+  const W = s.W, H = s.H, m = Math.min(W,H) * s.pad/100;
+  const fm = m * 0.55;                    // where paintFrame draws the border
+  const gap = m * 0.55;                   // breathing room between border and letters
+  const SQ = Math.SQRT1_2 * 2;            // inscribed-rectangle factor for an ellipse
+  switch(s.frame){
+    case 'circle': {
+      const r = Math.max(10, Math.min(W,H)/2 - fm - gap);
+      return [r*SQ, r*SQ];
+    }
+    case 'oval': {
+      const rx = Math.max(10, W/2 - fm - gap), ry = Math.max(10, H/2 - fm - gap);
+      return [rx*SQ, ry*SQ];
+    }
+    case 'star8': {
+      const r = Math.max(10, Math.min(W,H)/2 - fm - gap);
+      return [r*1.15, r*1.15];
+    }
+    case 'double': case 'corners':
+      return [Math.max(10, W - 2*(fm+gap)), Math.max(10, H - 2*(fm+gap))];
+    default:
+      return [Math.max(10, W - 2*m), Math.max(10, H - 2*m)];
+  }
+}
+
+let raf = 0;
+function schedule(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(render); }
+
+function render(){
+  const s = readState();
+  s.formsOK = supportsForms(s.font);
+  if(s.engine === 'glyph' && !s.formsOK){
+    $('fontSupport').innerHTML = '<span class="badge warn">هذا الخط لا يدعم التحكّم بالحروف — تم استخدام المحرّك التوافقي</span>';
+  }else{
+    $('fontSupport').innerHTML = s.engine === 'glyph'
+      ? '<span class="badge ok">تحكّم كامل بالحروف</span>' : '<span class="badge">تشكيل المتصفح</span>';
+  }
+
+  const rot = s.rotAll*Math.PI/180;
+
+  // pass 1 — probe at a reference size to learn the aspect ratio
+  const BASE = 150;
+  let comp = compose(BASE, s);
+  if(!comp){ cvs.width = s.W; cvs.height = s.H; paintBG(ctx,s.W,s.H,s); updateStatus(s, 0); return; }
+
+  if(s.autoSize){                       // let the canvas follow the design's own proportions
+    const rw = Math.abs(comp.box.w*Math.cos(rot)) + Math.abs(comp.box.h*Math.sin(rot));
+    const rh = Math.abs(comp.box.w*Math.sin(rot)) + Math.abs(comp.box.h*Math.cos(rot));
+    const a = rw/rh, LONG = 2400;
+    if(a >= 1){ s.W = LONG; s.H = Math.max(500, Math.round(LONG/a)); }
+    else      { s.H = LONG; s.W = Math.max(500, Math.round(LONG*a)); }
+    if(s.frame === 'circle' || s.frame === 'star8'){ s.W = s.H = LONG; }
+  }
+
+  // remember the design's true size, then pick the resolution actually rendered
+  designW = s.W; designH = s.H;
+  const mul = outScale != null
+    ? outScale
+    : Math.min(1, (innerWidth < 900 ? 1200 : 2600) / Math.max(s.W, s.H));
+  if(mul !== 1){
+    s.W = Math.max(1, Math.round(s.W*mul));
+    s.H = Math.max(1, Math.round(s.H*mul));
+  }
+
+  cvs.width = s.W; cvs.height = s.H;
+  paintBG(ctx, s.W, s.H, s);
+  paintFrame(ctx, s.W, s.H, s);
+
+  const [boxW, boxH] = contentBox(s);
+  const fitScale = b => {                 // fits the ink only; any glow bleeds past it
+    const w = Math.abs(b.w*Math.cos(rot)) + Math.abs(b.h*Math.sin(rot));
+    const h = Math.abs(b.w*Math.sin(rot)) + Math.abs(b.h*Math.cos(rot));
+    return Math.min(boxW/w, boxH/h);
+  };
+  // pass 2 — re-render at the final size so the type stays razor sharp
+  const px2 = Math.max(8, Math.min(4000, BASE * fitScale(comp.box)));
+  const comp2 = compose(px2, s) || comp;
+  const k = fitScale(comp2.box);
+  const b = comp2.box;
+
+  // A nudged letter overhangs the reference box and could fall off the canvas. Slide the
+  // whole design as a unit to bring it back — never rescale, never move the phrases apart.
+  let cx = s.W/2, cy = s.H/2;
+  if(maxNudge(s) > 0){
+    const ink = inkBox(comp2.canvas);
+    if(ink){
+      const ox = b.x + b.w/2, oy = b.y + b.h/2, co = Math.cos(rot), si = Math.sin(rot);
+      let mnX=Infinity, mxX=-Infinity, mnY=Infinity, mxY=-Infinity;
+      for(const [ix,iy] of [[ink.x,ink.y],[ink.x+ink.w,ink.y],[ink.x,ink.y+ink.h],[ink.x+ink.w,ink.y+ink.h]]){
+        const u = (ix-ox)*k, v = (iy-oy)*k;
+        const X = u*co - v*si, Y = u*si + v*co;
+        mnX=Math.min(mnX,X); mxX=Math.max(mxX,X);
+        mnY=Math.min(mnY,Y); mxY=Math.max(mxY,Y);
+      }
+      const m = 2;
+      if(mxX-mnX <= s.W-2*m){
+        if(cx+mnX < m) cx = m - mnX; else if(cx+mxX > s.W-m) cx = s.W-m - mxX;
+      }else cx = s.W/2 - (mnX+mxX)/2;
+      if(mxY-mnY <= s.H-2*m){
+        if(cy+mnY < m) cy = m - mnY; else if(cy+mxY > s.H-m) cy = s.H-m - mxY;
+      }else cy = s.H/2 - (mnY+mxY)/2;
+    }
+  }
+
+  ctx.save();
+  ctx.translate(cx, cy); ctx.rotate(rot); ctx.scale(k, k);
+  ctx.drawImage(comp2.canvas, -(b.x + b.w/2), -(b.y + b.h/2));
+  ctx.restore();
+
+  if(!exporting){ updateStatus(s, px2); buildChips(s); save(); }
+}
+
+/** Render the design fresh at `scale`× its true size — real resolution, not an upscale. */
+function renderAt(scale){
+  const c = OFF();
+  const oldCvs = cvs, oldCtx = ctx, oldScale = outScale;
+  cvs = c; ctx = c.getContext('2d'); outScale = scale; exporting = true;
+  try{ render(); } finally { cvs = oldCvs; ctx = oldCtx; outScale = oldScale; exporting = false; }
+  return c;
+}
+
+/** Can this device really back a canvas this big? iOS silently hands back a blank one. */
+function canvasUsable(w, h){
+  try{
+    const c = OFF(); c.width = w; c.height = h;
+    const x = c.getContext('2d');
+    if(!x) return false;
+    x.fillStyle = '#ff0000'; x.fillRect(w-2, h-2, 2, 2);
+    const ok = x.getImageData(w-2, h-2, 1, 1).data[0] === 255;
+    c.width = c.height = 1;                       // release straight away
+    return ok;
+  }catch(e){ return false; }
+}
+
+/**
+ * Export at the requested scale, stepping down if the device cannot allocate it.
+ * Steps by 0.8 rather than halving — halving quarters the area and gives up far more
+ * resolution than the device actually requires.
+ */
+function exportImage(scale){
+  const wanted = scale;
+  while(scale >= 0.4){
+    if(canvasUsable(Math.round(designW*scale), Math.round(designH*scale))){
+      scale = Math.round(scale*100)/100;
+      return { canvas: renderAt(scale), scale, reduced: scale < wanted };
+    }
+    scale *= 0.8;
+  }
+  return null;
+}
+
+function updateStatus(s, px){
+  $('stFont').textContent = 'الخط: ' + s.font;
+  $('stSize').textContent = 'اللوحة: ' + designW + '×' + designH +
+    (s.W !== designW ? ' (معاينة ' + s.W + '×' + s.H + ')' : '') +
+    ' • حجم الحرف: ' + Math.round(px * designW / s.W) + 'ب';
+  const n = (s.engine === 'glyph' && s.formsOK) ? shape(s.t1).length : [...s.t1].length;
+  $('stGlyphs').textContent = 'حروف العبارة الأولى: ' + n +
+    (wasmScan ? ' • نواة القياس: WebAssembly' : ' • نواة القياس: JavaScript');
+  $('bMuth').style.display = s.muthanna ? 'inline-block' : 'none';
+  $('t2').disabled = s.muthanna;
+}
+
+/* ---- per-glyph chips ---- */
+function buildChips(s){
+  const txt = curLine === 1 ? s.t1 : (s.muthanna ? s.t1 : s.t2);
+  const tw  = curLine === 1 ? tw1 : tw2;
+  const gl = shape(txt);
+  const box = $('chips'); box.innerHTML = '';
+  gl.forEach((g,i)=>{
+    if(g.isSpace) return;
+    const b = document.createElement('button');
+    b.className = 'chip' + (curGlyph === i ? ' on' : '') + (tw[i] ? ' edited' : '');
+    b.textContent = g.raw; b.title = 'الحرف ' + (i+1);
+    b.onclick = () => { curGlyph = i; syncGlyphEditor(); schedule(); };
+    box.appendChild(b);
+  });
+  $('glyphEditor').style.display = curGlyph >= 0 ? 'block' : 'none';
+}
+function curTw(){ return curLine === 1 ? tw1 : tw2; }
+function syncGlyphEditor(){
+  const t = curTw()[curGlyph] || {};
+  $('gsx').value = t.sx ?? 100; $('gsy').value = t.sy ?? 100;
+  $('grot').value = t.rot ?? 0; $('gdx').value = t.dx ?? 0;
+  $('gdy').value = t.dy ?? 0;  $('gk').value = t.k ?? 0;
+  labels();
+}
+function writeGlyph(){
+  if(curGlyph < 0) return;
+  const tw = curTw();
+  const t = { sx:+$('gsx').value, sy:+$('gsy').value, rot:+$('grot').value,
+              dx:+$('gdx').value, dy:+$('gdy').value, k:+$('gk').value };
+  const virgin = t.sx===100 && t.sy===100 && !t.rot && !t.dx && !t.dy && !t.k;
+  if(virgin) delete tw[curGlyph]; else tw[curGlyph] = t;
+  labels(); schedule();
+}
+
+/* ---- defaults + per-section reset ---- */
+const DEFAULTS = {};                  // captured from the markup, before any saved state loads
+function snapshotDefaults(){
+  document.querySelectorAll('.scroll input, .scroll select').forEach(e=>{
+    if(!e.id || e.type === 'file') return;
+    DEFAULTS[e.id] = e.type === 'checkbox' ? e.checked : e.value;
+  });
+  DEFAULTS._layout = layout; DEFAULTS._mirror = mirror;
+}
+function resetSection(fs){
+  fs.querySelectorAll('input, select').forEach(e=>{
+    if(!e.id || e.type === 'file' || !(e.id in DEFAULTS)) return;
+    if(e.type === 'checkbox') e.checked = DEFAULTS[e.id]; else e.value = DEFAULTS[e.id];
+  });
+  const segReset = (id, v) => {
+    const seg = fs.querySelector('#'+id); if(!seg) return false;
+    seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+    return true;
+  };
+  if(segReset('segLayout', DEFAULTS._layout)) layout = DEFAULTS._layout;
+  if(segReset('segMirror', DEFAULTS._mirror)) mirror = DEFAULTS._mirror;
+  if(fs.querySelector('#t1')){          // phrases went back to defaults: letter tweaks no longer match
+    tw1 = {}; tw2 = {}; curGlyph = -1;
+  }
+  if(fs.querySelector('#chips')){       // the per-letter section: drop every letter tweak too
+    tw1 = {}; tw2 = {}; curGlyph = -1; curLine = 1;
+    segReset('segLine', '1');
+  }
+  if(fs.querySelector('#font')) ensureFont($('font').value, $('weight').value).then(schedule);
+  labels(); schedule();
+  $('stMsg').textContent = 'تم تصفير هذا القسم';
+}
+/** double-clicking a control's name resets that one control to its default */
+function bindLabelResets(){
+  document.querySelectorAll('.scroll input, .scroll select').forEach(el=>{
+    if(!el.id || el.type === 'file' || !(el.id in DEFAULTS)) return;
+    // the name of a control is either the label wrapping it, or the label just before it
+    const prev = el.previousElementSibling;
+    const lbl = el.closest('label') || (prev && prev.tagName === 'LABEL' ? prev : null);
+    if(!lbl) return;
+    lbl.classList.add('resettable');
+    lbl.title = 'انقر مرّتين للتصفير';
+    lbl.addEventListener('dblclick', ev=>{
+      ev.preventDefault();
+      if(el.type === 'checkbox') el.checked = DEFAULTS[el.id]; else el.value = DEFAULTS[el.id];
+      if(el.id === 't1' || el.id === 't2'){ tw1 = {}; tw2 = {}; curGlyph = -1; }
+      if(['gsx','gsy','grot','gdx','gdy','gk'].includes(el.id)) writeGlyph();   // keep the letter tweak in sync
+      if(el.id === 'font' || el.id === 'weight') ensureFont($('font').value, $('weight').value).then(schedule);
+      labels(); schedule();
+      $('stMsg').textContent = 'تم تصفير: ' + lbl.textContent.replace(/[↺\s]+/g,' ').trim();
+    });
+  });
+}
+
+/** put a small ↺ button in every section header that has controls */
+function addSectionResets(){
+  document.querySelectorAll('.scroll fieldset').forEach(fs=>{
+    const lg = fs.querySelector('legend');
+    if(!lg || !fs.querySelector('input, select')) return;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'mini'; b.textContent = '↺ تصفير';
+    b.title = 'إرجاع هذا القسم إلى الإعداد الأصلي';
+    b.onclick = () => resetSection(fs);
+    lg.appendChild(b);
+  });
+}
+
+/* ---- slider value labels ---- */
+function labels(){
+  const set = (id,v)=>{ const e = $(id); if(e) e.textContent = v; };
+  set('vOverlap', $('overlap').value + '٪');
+  set('vShift',   $('shift').value + '٪');
+  set('vWeaveW',  $('weaveW').value);
+  set('vRotAll',  $('rotAll').value + '°');
+  set('vKash',    $('kash').value + '٪');
+  set('vTrack',   $('track').value + '٪');
+  set('vArc',     $('arc').value + '٪');
+  set('vSy',      $('sy').value + '٪');
+  set('vSx',      $('sx').value + '٪');
+  set('vSlant',   $('slant').value + '°');
+  set('vWave',    $('wave').value + '٪');
+  set('vStroke',  $('stroke').value);
+  set('vGlow',    $('glow').value);
+  set('vFrameW',  $('frameW').value);
+  set('vPad',     $('pad').value + '٪');
+  set('vGsx', $('gsx').value + '٪'); set('vGsy', $('gsy').value + '٪');
+  set('vGrot', $('grot').value + '°'); set('vGdx', $('gdx').value);
+  set('vGdy', $('gdy').value); set('vGk', $('gk').value + '٪');
+  // the two gradient pickers mean different things in each mode — say which
+  const own = $('gradMode').value === 'own';
+  set('lg1', own ? 'نهاية تدرّج العبارة الأولى' : 'لون التدرّج ١ (البداية)');
+  set('lg2', own ? 'نهاية تدرّج العبارة الثانية' : 'لون التدرّج ٢ (النهاية)');
+}
+
+/* ---- init controls ---- */
+(function init(){
+  // font list
+  const sel = $('font');
+  const add = (name, label) => { const o = document.createElement('option'); o.value = name; o.textContent = label || name; sel.appendChild(o); };
+  const g1 = document.createElement('optgroup'); g1.label = 'خطوط الجهاز'; sel.appendChild(g1);
+  SYS_FONTS.filter(fontAvailable).forEach(f=>{ const o = document.createElement('option'); o.value = f; o.textContent = f; g1.appendChild(o); });
+  const g2 = document.createElement('optgroup'); g2.label = 'خطوط الويب'; sel.appendChild(g2);
+  const AR_LABEL = {'Amiri':'أميري (نسخ)','Aref Ruqaa':'عارف رقعة','Scheherazade New':'شهرزاد','Reem Kufi':'ريم كوفي','Rakkas':'ركاز','Lalezar':'لاله زار','Mirza':'ميرزا','Jomhuria':'جمهورية','Qahiri':'قاهري','Marhey':'مرحي','Cairo':'القاهرة','Gulzar':'گلزار (نستعليق)','Noto Nastaliq Urdu':'نستعليق'};
+  WEB_FONTS.forEach(f=>{ const o = document.createElement('option'); o.value = f; o.textContent = (AR_LABEL[f]||f)+' — '+f; g2.appendChild(o); });
+  const pref = ['Arabic Typesetting','Traditional Arabic','Amiri'].find(f => [...sel.options].some(o=>o.value===f));
+  sel.value = pref || sel.options[0].value;
+
+  // presets
+  PRESETS.forEach(p=>{ const o = document.createElement('option'); o.value = p; o.textContent = p.replace('|', '  ✦  '); $('preset').appendChild(o); });
+  $('preset').onchange = e => {
+    if(!e.target.value) return;
+    const [a,b] = e.target.value.split('|');
+    $('t1').value = a; $('t2').value = b; tw1 = {}; tw2 = {}; curGlyph = -1; schedule();
+  };
+
+  // segmented buttons
+  const seg = (id, cb) => {
+    $(id).querySelectorAll('button').forEach(b => b.onclick = () => {
+      $(id).querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on'); cb(b.dataset.v); schedule();
+    });
+  };
+  seg('segLayout', v => layout = v);
+  seg('segMirror', v => mirror = v);
+  seg('segLine',   v => { curLine = +v; curGlyph = -1; syncGlyphEditor(); });
+
+  // generic bindings
+  const RERENDER = ['t1','t2','muthanna','font','weight','engine','overlap','shift','blend','weave','weaveW',
+    'rotAll','kash','track','arc','sy','sx','slant','wave','c1','c2','grad','g1','g2','gradDir','gradMode','stroke','strokeC',
+    'glow','glowC','outlineOnly','size','bgMode','bg1','bg2','frame','frameC','frameW','pad'];
+  RERENDER.forEach(id => { const e = $(id); e.addEventListener('input', ()=>{ labels(); schedule(); }); e.addEventListener('change', ()=>{ labels(); schedule(); }); });
+  ['font','weight'].forEach(id => $(id).addEventListener('change', async ()=>{
+    $('stMsg').textContent = 'جارٍ تحميل الخط…';
+    await ensureFont($('font').value, $('weight').value);
+    $('stMsg').textContent = ''; schedule();
+  }));
+  // per-letter tweaks are keyed by position, so drop any that no longer point at a letter
+  const prune = (tw, txt) => { const n = shape(txt).length; Object.keys(tw).forEach(k => { if(+k >= n) delete tw[k]; }); };
+  $('t1').addEventListener('input', ()=>{ curGlyph = -1; prune(tw1, $('t1').value); });
+  $('t2').addEventListener('input', ()=>{ curGlyph = -1; prune(tw2, $('t2').value); });
+  ['gsx','gsy','grot','gdx','gdy','gk'].forEach(id => $(id).addEventListener('input', writeGlyph));
+
+  $('btnSwap').onclick = () => { const a = $('t1').value; $('t1').value = $('t2').value; $('t2').value = a; const t = tw1; tw1 = tw2; tw2 = t; schedule(); };
+  $('btnGReset').onclick = () => { delete curTw()[curGlyph]; syncGlyphEditor(); schedule(); };
+  $('btnGResetAll').onclick = () => { if(curLine===1) tw1 = {}; else tw2 = {}; syncGlyphEditor(); schedule(); };
+  $('btnReset').onclick = () => { localStorage.removeItem(KEY); location.reload(); };
+  $('btnPanel').onclick = () => {
+    const app = document.querySelector('.app');
+    const wide = app.classList.toggle('wide');
+    $('btnPanel').textContent = wide ? '⛶ إظهار الإعدادات' : '⛶ تكبير المعاينة';
+    schedule();                       // the preview cap follows the new stage size
+  };
+
+  // local fonts: single files, a whole folder from the device, or the bundled fonts/ folder
+  $('fontFile').onchange = async e => {
+    const n = await addFontFiles([...e.target.files]);
+    if(n) $('font').value = $('font').querySelector('optgroup[label="خطوط محلّية"] option').value;
+    schedule();
+  };
+  $('fontDir').onchange = async e => {
+    const files = [...e.target.files].filter(f => FONT_EXT.test(f.name));
+    if(!files.length){ $('stMsg').textContent = 'لا توجد ملفات خطوط في هذا المجلّد'; return; }
+    await addFontFiles(files);
+    schedule();
+  };
+
+  // export — rendered natively at the target size, never upscaled from the preview
+  const download = (type, q) => {
+    $('stMsg').textContent = 'جارٍ التحضير…';
+    const res = exportImage(+$('exportScale').value);
+    if(!res){ $('stMsg').textContent = 'تعذّر إنشاء الصورة — جرّب مقاساً أصغر'; return; }
+    let out = res.canvas;
+    if(type === 'image/jpeg'){                    // JPEG has no alpha: lay the design on white
+      const f = OFF(); f.width = out.width; f.height = out.height;
+      const c = f.getContext('2d');
+      c.fillStyle = '#ffffff'; c.fillRect(0,0,f.width,f.height);
+      c.drawImage(out, 0, 0); out = f;
+    }
+    out.toBlob(b => {
+      if(!b){ $('stMsg').textContent = 'تعذّر إنشاء الصورة — جرّب جودة أقل'; return; }
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(b);
+      a.download = 'نقش-' + ($('t1').value.trim().slice(0,20) || 'تصميم') + (type==='image/jpeg' ? '.jpg' : '.png');
+      a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+      $('stMsg').textContent = 'تم التنزيل (' + out.width + '×' + out.height + ')' +
+        (res.reduced ? ' — خُفِّضت الجودة إلى ' + res.scale + '× لأن جهازك لا يدعم مقاساً أكبر' : '');
+    }, type, q);
+  };
+  $('btnPng').onclick = () => download('image/png');
+  $('btnJpg').onclick = () => download('image/jpeg', 0.95);
+  $('btnPrint').onclick = () => {
+    $('stMsg').textContent = 'جارٍ التحضير للطباعة…';
+    const res = exportImage(2);
+    if(!res){ $('stMsg').textContent = 'تعذّر التحضير للطباعة'; return; }
+    $('printImg').src = res.canvas.toDataURL('image/png');
+    $('stMsg').textContent = '';
+    setTimeout(()=>window.print(), 150);
+  };
+  $('btnCopy').onclick = async () => {
+    try{
+      const res = exportImage(+$('exportScale').value);
+      if(!res) throw new Error('size');
+      const b = await new Promise(r => res.canvas.toBlob(r, 'image/png'));
+      await navigator.clipboard.write([new ClipboardItem({'image/png': b})]);
+      $('stMsg').textContent = 'تم نسخ الصورة إلى الحافظة';
+    }catch(e){ $('stMsg').textContent = 'النسخ غير مدعوم في هذا المتصفح — استخدم التنزيل'; }
+  };
+
+  snapshotDefaults();
+  addSectionResets();
+  bindLabelResets();
+  restore();
+  labels();
+  schedule();
+  ensureFont($('font').value, $('weight').value).then(schedule);
+  document.fonts.ready.then(()=>{ formsCache.clear(); schedule(); });
+  loadBundledFonts();
+})();
+
+/* ---- persistence ---- */
+const KEY = 'naqsh-v1';
+function save(){
+  const o = {tw1, tw2, layout, mirror};
+  document.querySelectorAll('.scroll input, .scroll select').forEach(e=>{
+    if(e.type === 'file') return;
+    o['#'+e.id] = e.type === 'checkbox' ? e.checked : e.value;
+  });
+  try{ localStorage.setItem(KEY, JSON.stringify(o)); }catch(e){}
+}
+function restore(){
+  let o; try{ o = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
+  if(!o) return;
+  tw1 = o.tw1 || {}; tw2 = o.tw2 || {};
+  layout = o.layout || 'stack'; mirror = o.mirror || 'v';
+  Object.keys(o).forEach(k=>{
+    if(k[0] !== '#') return;
+    const e = $(k.slice(1)); if(!e) return;
+    if(e.id === 'font' && ![...e.options].some(x=>x.value === o[k])) return;
+    if(e.type === 'checkbox') e.checked = o[k]; else e.value = o[k];
+  });
+  const mark = (id, v) => $(id).querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  mark('segLayout', layout); mark('segMirror', mirror);
+}
+</script>
+</body>
+</html>
